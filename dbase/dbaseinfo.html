@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <header>
+        <h1>Diseño de Base de Datos</h1>
+    </header>
+    <div class="container">
+        <section>
+            <a href="./../Subsistemas/citas.html" class="button">citas</a>
+        </section>
+
+        <img src="./../imagenes/BD.jpeg" alt="Diagrama de Registros">
+
+
+        <h1>Descripción de Pertinencia de la Arquitectura de la Base de Datos</h1>
+        <p>La arquitectura de la base de datos del Subsistema de Registro ha sido diseñada para garantizar la organización, eficiencia y consistencia de los datos, aplicando las primeras tres formas normales (1NF, 2NF y 3NF). Este diseño sigue principios fundamentales de diseño relacional para asegurar que los datos sean precisos y que las operaciones de consulta y modificación se realicen de forma rápida y eficiente.</p>
+
+        <ul>
+            <li>Organización y Claridad de los Datos (1NF, 2NF, 3NF)</li>
+            <p>1NF (Primera Forma Normal): Todos los atributos en cada tabla contienen valores atómicos. Por ejemplo, en la tabla Ciudadanos, los datos de cada ciudadano (nombre, correo electrónico, teléfono) se almacenan en campos individuales.</p>
+            <p>2NF (Segunda Forma Normal): Cada atributo no clave depende completamente de la clave primaria de su tabla. En la tabla Citas, todos los detalles de la cita, como la fecha y el estado, dependen del identificador único de la cita.</p>
+            <p>3NF (Tercera Forma Normal): No existen dependencias transitivas en ninguna de las tablas. Por ejemplo, en la tabla EstatusTramite, todos los atributos dependen directamente de la clave primaria, evitando duplicaciones y manteniendo la consistencia.</p>
+        </ul>
+
+        <h1>Funcionalidades de los Usuarios del subsistema</h1>
+        <h3>Funcionalidades del Usuario del Sistema de Registro</h3>
+        
+        <ul>
+            <li>Visualizar su lista de trámites</li>
+            <p>La tabla Tramites facilita la visualización de la lista completa de trámites, permitiendo a los ciudadanos consultar fácilmente todos los registros.</p>
+
+            <li>Acceder a detalles específicos al seleccionar un trámite</li>
+            <p>Al seleccionar un trámite, los ciudadanos pueden ver detalles como la fecha de solicitud y el precio.</p>
+
+            <li>Visualizar los datos del ciudadano</li>
+            <p>A través de la relación entre las tablas Ciudadanos y Citas, los ciudadanos pueden consultar su información personal vinculada a sus trámites</p>
+
+            <li>Agendar Citas</li>
+            <p>Los ciudadanos pueden seleccionar fechas y horas disponibles para agendar sus citas y recibir confirmaciones.</p>
+            
+        </ul>
+        
+        <h1>Separación de Responsabilidades por Tabla</h1>
+        
+        <li>Ciudadanos</li>
+        <p>Almacena información personal y gestiona el registro de nuevos ciudadanos.</p>
+        
+        <li>citas</li>
+        <p>Registra y gestiona las citas agendadas por los ciudadanos, incluyendo detalles sobre el servicio.</p>
+
+        <li>EstatusTrámites</li>
+        <p>Gestiona el estado de los trámites, asegurando que se mantenga un seguimiento claro de cada uno.</p>
+
+        <li>servicio</li>
+        <p>Almacena información sobre los servicios disponibles, sus costos y descuentos.</p>
+        
+        <li>Requirimientos</li>
+        <p>Almacena requisitos necesarios para realizar ciertos trámites, manteniendo la información organizada.</p>
+        
+        <h1>Código SQL para construir las tablas con las llaves foráneas y su función</h1>
+        
+    <pre>
+        CREATE DATABASE Citas
+        use Citas
+        
+        -- Crear tabla Ciudadanos
+        
+        CREATE TABLE Ciudadanos (
+            ID_ciudadano INT PRIMARY KEY,
+            Primer_Nombre VARCHAR(50) NOT NULL,
+            Segundo_Nombre VARCHAR(50),
+            Apellido_Paterno VARCHAR(50) NOT NULL,
+            Apellido_Materno VARCHAR(50),
+            Correo VARCHAR(100) NOT NULL UNIQUE,
+            Domicilio VARCHAR(150),
+            Telefono VARCHAR(20)
+        );
+        
+        -- Crear tabla Servicio
+        CREATE TABLE Servicio (
+            ID_Servicio INT PRIMARY KEY ,
+            ID_Departamento INT,
+            Tipo_Servicio VARCHAR(200),
+            Descuento FLOAT,
+            Costo FLOAT
+        );
+        
+        -- Crear tabla Departamento
+        CREATE TABLE Departamento (
+            ID_Departamento INT PRIMARY KEY,
+            Descripcion VARCHAR(100) NOT NULL
+        );
+        
+        -- Crear tabla Citas
+        CREATE TABLE Citas (
+            ID_cita INT PRIMARY KEY,
+            ID_ciudadano INT,
+            ID_Servicio INT,
+            fecha DATE NOT NULL,
+            hora TIME NOT NULL,
+            fecha_creacion DATETIME
+        );
+        
+        -- Crear tabla EstatusTramite
+        CREATE TABLE EstatusTramite (
+            ID_estatus INT PRIMARY KEY,
+            ID_tramite INT,
+            estado VARCHAR(10),
+            fecha_actualizacion DATETIME
+        );
+        
+        -- Crear tabla Requerimiento
+        CREATE TABLE Requerimiento (
+            ID_Requerimiento INT PRIMARY KEY,
+            Comprobante_Identidad VARCHAR(200),
+            Comprobante_nomina CHAR(2)
+        );
+        
+        -- Agregar claves foráneas utilizando ALTER TABLE
+        ALTER TABLE Citas
+        ADD CONSTRAINT FK_Citas_Ciudadano FOREIGN KEY (ID_ciudadano)
+        REFERENCES Ciudadanos(ID_ciudadano);
+        
+        ALTER TABLE Citas
+        ADD CONSTRAINT FK_Citas_Servicio FOREIGN KEY (ID_Servicio)
+        REFERENCES Servicio(ID_Servicio);
+        
+        ALTER TABLE Servicio
+        ADD CONSTRAINT FK_Servicio_Departamento FOREIGN KEY (ID_Departamento)
+        REFERENCES Departamento(ID_Departamento);
+    </pre>
+
+    <h1>Registros en las Tablas de la Base de Datos</h1>
+        
+    <pre>
+        -- Insertar registros en la tabla Ciudadanos
+INSERT INTO Ciudadanos (ID_ciudadano, Primer_Nombre, Segundo_Nombre, Apellido_Paterno, Apellido_Materno, Correo, Domicilio, Telefono) VALUES
+(1, 'Juan', 'Carlos', 'Pérez', 'González', 'juan.perez@example.com', 'Calle Falsa 123', '555-1234'),
+(2, 'María', 'Elena', 'López', 'Hernández', 'maria.lopez@example.com', 'Avenida Siempre Viva 742', '555-5678');
+
+-- Insertar registros en la tabla Departamento
+INSERT INTO Departamento (ID_Departamento, Descripcion) VALUES
+(1, 'Atención al Cliente'),
+(2, 'Soporte Técnico');
+
+-- Insertar registros en la tabla Servicio
+INSERT INTO Servicio (ID_Servicio, ID_Departamento, Tipo_Servicio, Descuento, Costo) VALUES
+(1, 1, 'Consulta General', 10.0, 100.0),
+(2, 2, 'Soporte de Software', 5.0, 200.0);
+
+-- Insertar registros en la tabla Citas
+INSERT INTO Citas (ID_cita, ID_ciudadano, ID_Servicio, fecha, hora, fecha_creacion) VALUES
+(1, 1, 1, '2024-10-30', '09:00:00', NOW()),
+(2, 2, 2, '2024-10-31', '14:00:00', NOW());
+
+-- Insertar registros en la tabla EstatusTramite
+INSERT INTO EstatusTramite (ID_estatus, ID_tramite, estado, fecha_actualizacion) VALUES
+(1, 1, 'Pendiente', NOW()),
+(2, 2, 'Completado', NOW());
+
+-- Insertar registros en la tabla Requerimiento
+INSERT INTO Requerimiento (ID_Requerimiento, Comprobante_Identidad, Comprobante_nomina) VALUES
+(1, 'Copia de Identidad', 'S1'),
+(2, 'Comprobante de Trabajo', 'S2')
+
+SELECT * FROM Ciudadanos;
+
+INSERT INTO Ciudadanos (ID_ciudadano, Primer_Nombre, Segundo_Nombre, Apellido_Paterno, Apellido_Materno, Correo, Domicilio, Telefono) VALUES
+(3, 'Luis', 'Fernando', 'Martínez', 'Sánchez', 'luis.martinez@example.com', 'Calle Ejemplo 456', '555-7890');
+
+DELETE FROM Ciudadanos
+WHERE ID_ciudadano = 3;
+    </pre>
+    </div>
+</body>
+</html>
+</body>
+</html>
