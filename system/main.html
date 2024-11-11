@@ -64,6 +64,7 @@
             background-color: #d4edda;
             border: 1px solid #c3e6cb;
             color: #155724;
+            text-align: center;
         }
     </style>
     <script>
@@ -94,6 +95,12 @@
     </script>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="./../subsistemas/citas.html">Subsistema de Citas</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
         <h2>Solicitar Cita en Presidencia</h2>
         <form id="citaForm" onsubmit="mostrarConfirmacion(event)">
@@ -107,7 +114,7 @@
             </div>
             <div class="form-group">
                 <label for="telefono">Número de Teléfono</label>
-                <input type="text" id="telefono" name="telefono" required>
+                <input type="tel" id="telefono" name="telefono" required>
             </div>
             <div class="form-group">
                 <label for="tramite">Seleccionar Trámite</label>
@@ -118,7 +125,7 @@
                     <option value="acta_matrimonio">Acta de Matrimonio</option>
                 </select>
             </div>
-            <div class="form-group requisitos" id="requisitos"></div>
+            <div class="form-group requisitos" id="requisitos" aria-live="polite"></div>
             <div class="form-group">
                 <label for="fecha">Seleccionar Fecha</label>
                 <input type="date" id="fecha" name="fecha" required>
