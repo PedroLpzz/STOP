@@ -58,12 +58,13 @@
             border-left: 5px solid #007bff;
         }
         .mensaje-confirmacion {
-            display: none;
             margin-top: 20px;
-            padding: 10px;
+            padding: 15px;
+            color: #155724;
             background-color: #d4edda;
             border: 1px solid #c3e6cb;
-            color: #155724;
+            border-radius: 5px;
+            display: none;
             text-align: center;
         }
     </style>
@@ -79,31 +80,23 @@
             requisitosDiv.innerHTML = requisitos[select.value] || '';
         }
 
-        function mostrarConfirmacion(event) {
-            event.preventDefault(); // Evita el envío del formulario
-
-            // Aquí podrías hacer la lógica para enviar los datos al servidor
-
-            // Muestra el mensaje de confirmación
-            const mensajeDiv = document.getElementById('mensaje-confirmacion');
-            mensajeDiv.style.display = 'block';
-            mensajeDiv.innerHTML = '¡Cita agendada con éxito!';
-
-            // Opcional: limpiar el formulario
-            document.getElementById('citaForm').reset();
+        function confirmarCita(event) {
+            event.preventDefault(); // Evitar el envío del formulario para mostrar el mensaje
+            document.getElementById('mensaje-confirmacion').innerText = "¡Cita confirmada! Te hemos enviado un correo de confirmación con los detalles.";
+            document.getElementById('mensaje-confirmacion').style.display = 'block';
         }
     </script>
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="./../Subsistemas/citas.html">Subsistema de Citas</a></li>
+            <li><a href="./../subsistemas/citas.html">Subsistema de Citas</a></li>
         </ul>
     </nav>
 
     <div class="container">
         <h2>Solicitar Cita en Presidencia</h2>
-        <form id="citaForm" onsubmit="mostrarConfirmacion(event)">
+        <form action="/submit-cita" method="POST" onsubmit="confirmarCita(event)">
             <div class="form-group">
                 <label for="nombre">Nombre Completo</label>
                 <input type="text" id="nombre" name="nombre" required>
