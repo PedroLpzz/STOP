@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Cita</title>
+
+    <nav>
+        <ul>
+            <li><a href="./../subsistemas/citas.html">Subsistema de Citas</a></li>
+        </ul>
+    </nav>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Cita en Presidencia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .requisitos {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-left: 5px solid #007bff;
+        }
+    </style>
+    <script>
+        function mostrarRequisitos() {
+            const requisitos = {
+                'acta_nacimiento': 'Requisitos: Identificación oficial, comprobante de domicilio.',
+                'acta_defuncion': 'Requisitos: Identificación oficial del solicitante, certificado de defunción.',
+                'acta_matrimonio': 'Requisitos: Identificación oficial de ambos contrayentes, comprobante de domicilio.'
+            };
+            const select = document.getElementById('tramite');
+            const requisitosDiv = document.getElementById('requisitos');
+            requisitosDiv.innerHTML = requisitos[select.value] || '';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Solicitar Cita en Presidencia</h2>
+        <form action="/submit-cita" method="POST">
+            <div class="form-group">
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Número de Teléfono</label>
+                <input type="text" id="telefono" name="telefono" required>
+            </div>
+            <div class="form-group">
+                <label for="tramite">Seleccionar Trámite</label>
+                <select id="tramite" name="tramite" onchange="mostrarRequisitos()" required>
+                    <option value="">-- Seleccionar --</option>
+                    <option value="acta_nacimiento">Acta de Nacimiento</option>
+                    <option value="acta_defuncion">Acta de Defunción</option>
+                    <option value="acta_matrimonio">Acta de Matrimonio</option>
+                </select>
+            </div>
+            <div class="form-group requisitos" id="requisitos"></div>
+            <div class="form-group">
+                <label for="fecha">Seleccionar Fecha</label>
+                <input type="date" id="fecha" name="fecha" required>
+            </div>
+            <div class="form-group">
+                <label for="hora">Seleccionar Hora</label>
+                <select id="hora" name="hora" required>
+                    <option value="">-- Seleccionar --</option>
+                    <option value="09:00">09:00</option>
+                    <option value="10:00">10:00</option>
+                    <option value="11:00">11:00</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="14:00">14:00</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit">Agendar Cita</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
